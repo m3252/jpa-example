@@ -6,17 +6,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Repository
-public class MemberRepository {
+public class UserRepository {
 
     @PersistenceContext
     private EntityManager em;
 
-    public Long save(Member member) {
-        em.persist(member);
-        return member.getId();
+    public Long save(User user) {
+        em.persist(user);
+        return user.getId();
     }
 
-    public Member find(Long id) {
-        return em.find(Member.class, id);
+    public User find(Long id) {
+        return em.find(User.class, id);
     }
 }
