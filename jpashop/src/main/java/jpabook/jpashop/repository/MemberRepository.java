@@ -9,8 +9,6 @@ import java.util.List;
 
 @Repository
 public class MemberRepository {
-
-//    @PersistenceContext
     private final EntityManager em;
 
     public MemberRepository(EntityManager em) {
