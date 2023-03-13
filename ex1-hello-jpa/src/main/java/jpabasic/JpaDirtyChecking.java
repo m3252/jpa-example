@@ -14,7 +14,7 @@ public class JpaDirtyChecking {
 
         try {
             Member member = em.find(Member.class, 150L);
-            member.setName("150번바꿈");
+            member.setUsername("150번바꿈");
 
             //em.persist(member);
 
