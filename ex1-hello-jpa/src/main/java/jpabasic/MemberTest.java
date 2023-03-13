@@ -4,22 +4,22 @@ import javax.persistence.*;
 
 @Entity
 @SequenceGenerator(
-        name = "MEMBER_SEQ_GENERATOR",
-        sequenceName = "MEMBER_SEQ",
+        name = "MEMBER_TEST_SEQ_GENERATOR",
+        sequenceName = "MEMBER_TEST_SEQ",
         initialValue = 1, allocationSize = 50
 )
-public class Member {
+public class MemberTest {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "MEMBER_SEQ_GENERATOR")
+            generator = "MEMBER_TEST_SEQ_GENERATOR")
     private Long id;
 
     private String username;
 
-    public Member() {
+    public MemberTest() {
     }
 
-    public Member(Long id, String username) {
+    public MemberTest(Long id, String username) {
         this.id = id;
         this.username = username;
     }

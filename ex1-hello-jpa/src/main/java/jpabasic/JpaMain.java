@@ -13,14 +13,14 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member1 = new Member();
-            member1.setUsername("A");
+            MemberTest memberTest1 = new MemberTest();
+            memberTest1.setUsername("A");
 
-            Member member2 = new Member();
-            member2.setUsername("B");
+            MemberTest memberTest2 = new MemberTest();
+            memberTest2.setUsername("B");
 
-            Member member3 = new Member();
-            member3.setUsername("C");
+            MemberTest memberTest3 = new MemberTest();
+            memberTest3.setUsername("C");
 
             System.out.println("==================");
 
@@ -28,13 +28,13 @@ public class JpaMain {
             // DB SEQ = 51 | 2
             // DB SEQ = 51 | 3
 
-            em.persist(member1);
-            em.persist(member2);
-            em.persist(member3);
+            em.persist(memberTest1);
+            em.persist(memberTest2);
+            em.persist(memberTest3);
 
-            System.out.println("member1.getId() = " + member1.getId());
-            System.out.println("member2.getId() = " + member2.getId());
-            System.out.println("member3.getId() = " + member3.getId());
+            System.out.println("member1.getId() = " + memberTest1.getId());
+            System.out.println("member2.getId() = " + memberTest2.getId());
+            System.out.println("member3.getId() = " + memberTest3.getId());
 
 
             tx.commit();

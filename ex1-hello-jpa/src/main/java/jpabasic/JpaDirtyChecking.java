@@ -13,8 +13,8 @@ public class JpaDirtyChecking {
         tx.begin();
 
         try {
-            Member member = em.find(Member.class, 150L);
-            member.setUsername("150번바꿈");
+            MemberTest memberTest = em.find(MemberTest.class, 150L);
+            memberTest.setUsername("150번바꿈");
 
             //em.persist(member);
 
