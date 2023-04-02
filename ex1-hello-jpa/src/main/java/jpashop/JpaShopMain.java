@@ -1,8 +1,5 @@
 package jpashop;
 
-import jpabasic.MemberTest;
-import jpashop.domain.Order;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -16,6 +13,9 @@ public class JpaShopMain {
         tx.begin();
 
         try {
+//            Order order = new Order();
+//            order.addOrderItem(new OrderItem());
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
