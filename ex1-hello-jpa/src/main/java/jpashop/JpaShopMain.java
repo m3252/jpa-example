@@ -1,6 +1,7 @@
 package jpashop;
 
-import jpashop.domain.Book;
+import jpashop.domain.Member;
+import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -15,12 +16,18 @@ public class JpaShopMain {
         tx.begin();
 
         try {
-            Book book = new Book();
-            book.setName("JPA");
-            book.setDirector("김영한");
-            book.setActor("김영한");
+            Member member = new Member();
+            member.setName("proxy");
 
-            em.persist(book);
+            em.persist(member);
+            em.flush();
+            em.clear();
+
+            Member reference = em.getReference(Member.class, member.getId());
+            System.out.println("reference.getClass() = " + reference.getClass());
+            System.out.println("member.getId() = " + reference.getId());
+            System.out.println(emf.getPersistenceUnitUtil().isLoaded(reference));
+            Hibernate.initialize(reference);
 
             tx.commit();
         } catch (Exception e) {
