@@ -26,6 +26,9 @@
         <class>jpashop.domain.OrderItem</class>
         <class>jpashop.domain.OrderStatus</class>
         <class>jpashop.domain.Item</class>
+        <class>jpashop.domain.Category</class>
+        <class>jpashop.domain.Delivery</class>
+        <class>jpashop.domain.DeliveryStatus</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <!-- 필수 속성 -->
@@ -46,6 +49,10 @@
     <persistence-unit name="graph">
         <class>graph.domain.Member</class>
         <class>graph.domain.Team</class>
+        <class>graph.domain.Item</class>
+        <class>graph.domain.Book</class>
+        <class>graph.domain.Album</class>
+        <class>graph.domain.Movie</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <!-- 필수 속성 -->

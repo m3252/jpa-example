@@ -1,13 +1,14 @@
 package graph;
 
+import graph.domain.Item;
 import graph.domain.Member;
+import graph.domain.Movie;
 import graph.domain.Team;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.List;
 
 public class GraphMain {
     public static void main(String[] args) {
@@ -18,26 +19,19 @@ public class GraphMain {
 
         try {
 
-            Member member = new Member();
-            member.setUsername("moon");
-//            member.changeTeam(team);
-            em.persist(member);
+            Movie movie = new Movie();
+            movie.setActor("액터");
+            movie.setDirector("디렉터");
+            movie.setName("네임");
+            movie.setPrice(1000);
 
-            Team team = new Team();
-            team.setName("RED");
-            team.addMember(member);
-            em.persist(team);
+            em.persist(movie);
 
             em.flush();
             em.clear();
 
-            Team findTeam = em.find(Team.class, team.getId());
-            List<Member> members = findTeam.getMembers();
-            System.out.println("===================");
-            for (Member m: members) {
-                System.out.println("m.getUsername() = " + m.getUsername());
-            }
-            System.out.println("===================");
+            Item findMovie = em.find(Item.class, movie.getId());
+            System.out.println("findMovie = " + findMovie);
 
             tx.commit();
         } catch (Exception e) {
