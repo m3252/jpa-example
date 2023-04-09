@@ -56,6 +56,8 @@
         <class>graph.domain.Book</class>
         <class>graph.domain.Album</class>
         <class>graph.domain.Movie</class>
+        <class>graph.domain.Parent</class>
+        <class>graph.domain.Child</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <!-- 필수 속성 -->
