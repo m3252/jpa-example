@@ -1,14 +1,10 @@
 package graph;
 
-import graph.domain.Item;
 import graph.domain.Member;
-import graph.domain.Movie;
 import graph.domain.Team;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
+import java.util.List;
 
 public class GraphMain {
     public static void main(String[] args) {
@@ -18,20 +14,42 @@ public class GraphMain {
         tx.begin();
 
         try {
+            Team team = new Team();
+            team.setName("팀스카이");
 
-            Movie movie = new Movie();
-            movie.setActor("액터");
-            movie.setDirector("디렉터");
-            movie.setName("네임");
-            movie.setPrice(1000);
+            em.persist(team);
 
-            em.persist(movie);
+            Team team2 = new Team();
+            team2.setName("팀AX");
+
+            em.persist(team2);
+
+            Member member = new Member();
+            member.setUsername("후롬");
+            member.setTeam(team);
+            em.persist(member);
+
+            Member member2 = new Member();
+            member2.setUsername("발롱");
+            member2.setTeam(team2);
+            em.persist(member2);
 
             em.flush();
             em.clear();
 
-            Item findMovie = em.find(Item.class, movie.getId());
-            System.out.println("findMovie = " + findMovie);
+//            Member findMember = em.find(Member.class, member.getId());
+//            System.out.println("findMember.getTeam().getClass() = " + findMember.getTeam().getClass());
+//            System.out.println("==================");
+//            System.out.println(findMember.getTeam().getName());
+//            System.out.println("==================");
+
+            List<Member> selectMFromMemberM = em.createQuery("Select m from Member m join fetch m.team", Member.class)
+                    .getResultList();
+
+
+            selectMFromMemberM.forEach(System.out::println);
+
+
 
             tx.commit();
         } catch (Exception e) {
