@@ -3,6 +3,8 @@ package graph;
 import graph.domain.*;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 public class GraphMain {
     public static void main(String[] args) {
@@ -12,22 +14,41 @@ public class GraphMain {
         tx.begin();
 
         try {
-            Address homeAddress = new Address("str1", "str2", "city", "zipcode");
             Member member1 = new Member();
             member1.setUsername("member1");
-            member1.setHomeAddress(homeAddress);
+            member1.setHomeAddress(new Address("str1", "str2", "homeCity", "1000"));
+
+            member1.getFavoriteFoods().add("치킨");
+            member1.getFavoriteFoods().add("족발");
+            member1.getFavoriteFoods().add("피자");
+
+            member1.getAddressHistory().add(new Address("old1", "old1", "old1", "old1"));
+            member1.getAddressHistory().add(new Address("old2", "old2", "old2", "old2"));
             em.persist(member1);
 
-//            Address copyAddress = new Address(homeAddress.getStreet1(), homeAddress.getStreet2(), homeAddress.getCity(), homeAddress.getZipcode());
-//
-//            Member member2 = new Member();
-//            member2.setUsername("member2");
-//            member2.setHomeAddress(copyAddress);
-//            em.persist(member2);
-//            member1.getHomeAddress().setCity("newCity");
+            em.flush();
+            em.clear();
 
-            Address newHomeAddress = new Address(homeAddress.getStreet1(), homeAddress.getStreet2(), "newCity", homeAddress.getZipcode());
-            member1.setHomeAddress(newHomeAddress);
+            System.out.println("===========================");
+            Member member = em.find(Member.class, member1.getId());
+
+            List<Address> addressHistory = member.getAddressHistory();
+            addressHistory.forEach(e-> System.out.println(e.getCity()));
+
+            Set<String> favoriteFoods = member.getFavoriteFoods();
+            favoriteFoods.forEach(System.out::println);
+
+            // homeCity > newCity
+            member.getAddressHistory().add(member.getHomeAddress());
+            member.setHomeAddress(new Address("new1", "new2", "newCity", "1000"));
+
+            // 치킨 > 한식
+            member.getFavoriteFoods().remove("치킨");
+            member.getFavoriteFoods().add("한식");
+
+            //old1 > old3
+            member.getAddressHistory().remove(new Address("old1", "old1", "old1", "old1"));
+            member.getAddressHistory().add(new Address("old3", "old3", "old3", "old3"));
 
             tx.commit();
         } catch (Exception e) {
