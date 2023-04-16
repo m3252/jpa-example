@@ -1,6 +1,7 @@
 package jpql;
 
 import jpql.domain.Member;
+import jpql.domain.Team;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,24 +15,39 @@ public class JpqlMain {
         tx.begin();
         try {
 
-            for (int i = 0; i < 100; i++) {
-                Member member = new Member();
-                member.setUsername("member" + i);
-                member.setAge(i);
-                em.persist(member);
-            }
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("teamA");
+            member.setAge(30);
+
+            member.changeTeam(team);
+            em.persist(member);
+
 
             em.flush();
             em.clear();
 
-            List<Member> resultList = em.createQuery("select m from Member m order by m.age desc", Member.class)
+//            List<Member> resultList = em.createQuery("select m from Member m left join m.team t", Member.class)
+//                    .setFirstResult(0)
+//                    .setMaxResults(10)
+//                    .getResultList();
+            String qlString = "select m from Member m, Team t where m.username = t.name";
+            List<Member> crossJoin = em.createQuery(qlString, Member.class)
                     .setFirstResult(0)
                     .setMaxResults(10)
                     .getResultList();
 
-            System.out.println("resultList.size() = " + resultList.size());
-            resultList.forEach(m -> System.out.println("m = " + m.getAge()));
+            System.out.println("crossJoin.size() = " + crossJoin.size());
 
+            // 조인 대상 필터링
+            // String query = "select m, t from Member m left join m.team t on t.name = 'teamA'";
+
+            // 실제 SQL
+            // select m.*, t.* from Member m
+            // left join Team t on m.TEAM_ID = t.id and t.name = 'teamA'
 
 
             tx.commit();
