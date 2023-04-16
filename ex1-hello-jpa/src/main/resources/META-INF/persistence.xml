@@ -58,6 +58,7 @@
         <class>graph.domain.Movie</class>
         <class>graph.domain.Parent</class>
         <class>graph.domain.Child</class>
+        <class>graph.domain.AddressEntity</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <!-- 필수 속성 -->
