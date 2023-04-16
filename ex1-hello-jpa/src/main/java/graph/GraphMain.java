@@ -14,19 +14,12 @@ public class GraphMain {
         tx.begin();
 
         try {
-            Member member1 = new Member();
-            member1.setUsername("member1");
-            member1.setHomeAddress(new Address("str1", "str2", "homeCity", "1000"));
+            String qlString = "select m from Member m where m.username like '%kim%'";
+            List<Member> resultList = em.createQuery(qlString, Member.class)
+                    .getResultList();
 
-            member1.getAddressHistory().add(new AddressEntity("old1", "old1", "old1", "old1"));
-            member1.getAddressHistory().add(new AddressEntity("old2", "old2", "old2", "old2"));
-            em.persist(member1);
-
-            em.flush();
-            em.clear();
-
-            System.out.println("===========================");
-            Member member = em.find(Member.class, member1.getId());
+            String nativeString = "select MEMBER_ID, city, zipcode from MEMBER";
+            em.createNativeQuery(nativeString).getResultList();
 
             tx.commit();
         } catch (Exception e) {
