@@ -18,19 +18,6 @@ public class Member {
     @Embedded
     private Address homeAddress;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name="street1",
-                    column=@Column(name="work_street1")),
-            @AttributeOverride(name="street2",
-                    column=@Column(name="work_street2")),
-            @AttributeOverride(name="city",
-                    column=@Column(name="work_city")),
-            @AttributeOverride(name="zipcode",
-                    column=@Column(name="work_zipcode"))
-    })
-    private Address workAddress;
-
     public Long getId() {
         return id;
     }

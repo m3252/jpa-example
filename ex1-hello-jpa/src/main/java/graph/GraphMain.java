@@ -3,7 +3,6 @@ package graph;
 import graph.domain.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 public class GraphMain {
     public static void main(String[] args) {
@@ -13,11 +12,22 @@ public class GraphMain {
         tx.begin();
 
         try {
-            Member member = new Member();
-            member.setUsername("hello");
-            member.setHomeAddress(new Address("str1", "str2", "city", "zipcode"));
-            member.setWorkPeriod(new Period());
-            em.persist(member);
+            Address homeAddress = new Address("str1", "str2", "city", "zipcode");
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            member1.setHomeAddress(homeAddress);
+            em.persist(member1);
+
+//            Address copyAddress = new Address(homeAddress.getStreet1(), homeAddress.getStreet2(), homeAddress.getCity(), homeAddress.getZipcode());
+//
+//            Member member2 = new Member();
+//            member2.setUsername("member2");
+//            member2.setHomeAddress(copyAddress);
+//            em.persist(member2);
+//            member1.getHomeAddress().setCity("newCity");
+
+            Address newHomeAddress = new Address(homeAddress.getStreet1(), homeAddress.getStreet2(), "newCity", homeAddress.getZipcode());
+            member1.setHomeAddress(newHomeAddress);
 
             tx.commit();
         } catch (Exception e) {
