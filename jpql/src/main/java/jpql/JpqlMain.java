@@ -1,6 +1,7 @@
 package jpql;
 
 import jpql.domain.Member;
+import jpql.domain.MemberType;
 import jpql.domain.Team;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class JpqlMain {
             Member member = new Member();
             member.setUsername("teamA");
             member.setAge(30);
+            member.setType(MemberType.ADMIN);
 
             member.changeTeam(team);
             em.persist(member);
@@ -30,24 +32,19 @@ public class JpqlMain {
             em.flush();
             em.clear();
 
-//            List<Member> resultList = em.createQuery("select m from Member m left join m.team t", Member.class)
-//                    .setFirstResult(0)
-//                    .setMaxResults(10)
-//                    .getResultList();
-            String qlString = "select m from Member m, Team t where m.username = t.name";
-            List<Member> crossJoin = em.createQuery(qlString, Member.class)
-                    .setFirstResult(0)
-                    .setMaxResults(10)
+//            String query = "select m.username, 'HELLO', TRUE FROM Member m "
+//                    + "where m.type = jpql.domain.MemberType.USER";
+            String query = "select m.username, 'HELLO', TRUE FROM Member m "
+                    + "where m.type = :userType";
+            List<Object[]> resultList = em.createQuery(query)
+                    .setParameter("userType", MemberType.ADMIN)
                     .getResultList();
 
-            System.out.println("crossJoin.size() = " + crossJoin.size());
-
-            // 조인 대상 필터링
-            // String query = "select m, t from Member m left join m.team t on t.name = 'teamA'";
-
-            // 실제 SQL
-            // select m.*, t.* from Member m
-            // left join Team t on m.TEAM_ID = t.id and t.name = 'teamA'
+            for (Object[] objects : resultList) {
+                System.out.println("objects[0] = " + objects[0]);
+                System.out.println("objects[1] = " + objects[1]);
+                System.out.println("objects[2] = " + objects[2]);
+            }
 
 
             tx.commit();
