@@ -21,8 +21,8 @@ public class JpqlMain {
             em.persist(team);
 
             Member member = new Member();
-            member.setUsername("teamA");
-            member.setAge(30);
+            member.setUsername(null);
+            member.setAge(10);
             member.setType(MemberType.ADMIN);
 
             member.changeTeam(team);
@@ -32,18 +32,21 @@ public class JpqlMain {
             em.flush();
             em.clear();
 
-//            String query = "select m.username, 'HELLO', TRUE FROM Member m "
-//                    + "where m.type = jpql.domain.MemberType.USER";
-            String query = "select m.username, 'HELLO', TRUE FROM Member m "
-                    + "where m.type = :userType";
-            List<Object[]> resultList = em.createQuery(query)
-                    .setParameter("userType", MemberType.ADMIN)
+//            String query =
+//                    "select" +
+//                            " case when m.age <= 10 then '학생요금'" +
+//                            "      when m.age >= 60 then '경로요금'" +
+//                            "      else '일반요금'" +
+//                            " end" +
+//                    " from Member m";
+
+//            String query = "select coalesce(m.username, '이름 없는 회원') from Member m";
+            String query = "select nullif(m.username, '관리자') from Member m";
+            List<String> result = em.createQuery(query, String.class)
                     .getResultList();
 
-            for (Object[] objects : resultList) {
-                System.out.println("objects[0] = " + objects[0]);
-                System.out.println("objects[1] = " + objects[1]);
-                System.out.println("objects[2] = " + objects[2]);
+            for (String s : result) {
+                System.out.println("s = " + s);
             }
 
 
