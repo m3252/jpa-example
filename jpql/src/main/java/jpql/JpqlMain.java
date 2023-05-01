@@ -21,27 +21,22 @@ public class JpqlMain {
             em.persist(team);
 
             Member member = new Member();
-            member.setUsername(null);
+            member.setUsername("관리자1");
             member.setAge(10);
             member.setType(MemberType.ADMIN);
 
             member.changeTeam(team);
             em.persist(member);
 
+            Member member2 = new Member();
+            member2.setUsername("관리자2");
+            em.persist(member2);
+
 
             em.flush();
             em.clear();
 
-//            String query =
-//                    "select" +
-//                            " case when m.age <= 10 then '학생요금'" +
-//                            "      when m.age >= 60 then '경로요금'" +
-//                            "      else '일반요금'" +
-//                            " end" +
-//                    " from Member m";
-
-//            String query = "select coalesce(m.username, '이름 없는 회원') from Member m";
-            String query = "select nullif(m.username, '관리자') from Member m";
+            String query = "select function('group_concat', m.username) from Member m";
             List<String> result = em.createQuery(query, String.class)
                     .getResultList();
 
