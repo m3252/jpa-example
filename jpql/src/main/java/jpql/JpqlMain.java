@@ -43,20 +43,18 @@ public class JpqlMain {
             em.flush();
             em.clear();
 
-            String query = "select t from Team t";
-//            String query = "select m from Member m join fetch m.team";
-            List<Team> result = em.createQuery(query, Team.class)
-                    .setFirstResult(0)
-                    .setMaxResults(2)
-                    .getResultList(); //메모리에서 페이징
+//            String query = "select m from Member m where m = :member";
+//            Member result = em.createQuery(query, Member.class)
+//                    .setParameter("member", member1)
+//                    .getSingleResult();
+            String query = "select m from Member m where m.team = :team";
+            List<Member> result = em.createQuery(query, Member.class)
+                    .setParameter("team", teamA)
+                    .getResultList();
 
-            for (Team team : result) {
-                System.out.println("team.getName() + team.getMembers().size() = " + team.getName() + team.getMembers().size());
-                for (Member member : team.getMembers()) {
-                    System.out.println(member.getUsername());
+            System.out.println("=====================================");
+            System.out.println("result = " + result.size());
 
-                }
-            }
 
 
             tx.commit();
