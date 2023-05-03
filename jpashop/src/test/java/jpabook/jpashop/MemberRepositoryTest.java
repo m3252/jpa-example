@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
-class UserRepositoryTest {
+class MemberRepositoryTest {
 
     @Autowired
     UserRepository userRepository;
@@ -18,15 +18,15 @@ class UserRepositoryTest {
     @Transactional
     @Rollback(value = false)
     void save() {
-        User user = new User();
-        user.setUsername("test");
-        Long saveId = userRepository.save(user);
-        User findUser = userRepository.find(saveId);
+        Member member = new Member();
+        member.setUsername("test");
+        Long saveId = userRepository.save(member);
+        Member findMember = userRepository.find(saveId);
 
-        assertThat(findUser.getUsername()).isEqualTo(user.getUsername());
-        assertThat(findUser.getId()).isEqualTo(user.getId());
-        assertThat(findUser).isEqualTo(user);
-        assertThat(findUser).isSameAs(user);
+        assertThat(findMember.getUsername()).isEqualTo(member.getUsername());
+        assertThat(findMember.getId()).isEqualTo(member.getId());
+        assertThat(findMember).isEqualTo(member);
+        assertThat(findMember).isSameAs(member);
 
     }
 
