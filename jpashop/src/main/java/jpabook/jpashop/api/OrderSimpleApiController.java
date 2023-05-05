@@ -44,6 +44,7 @@ public class OrderSimpleApiController {
         return all;
     }
 
+    // N + 1 조회
     @GetMapping("/api/v2/simple-orders")
     public List<SimpleOrderResponse> orderV2() {
 
@@ -52,6 +53,18 @@ public class OrderSimpleApiController {
         return orders.stream()
                 .map(SimpleOrderResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/api/v3/simple-orders")
+    public List<SimpleOrderResponse> orderV3() {
+
+        List<Order> orders = orderRepository.findAllWithMemberAndDelivery();
+
+        List<SimpleOrderResponse> result = orders.stream()
+                .map(SimpleOrderResponse::new)
+                .collect(Collectors.toList());
+
+        return result;
     }
 
     @Data
