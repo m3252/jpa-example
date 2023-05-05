@@ -42,6 +42,16 @@ public class OrderApiController {
         return collect;
     }
 
+    @GetMapping("api/v3/orders")
+    public List<OrderResponse> orderV3() {
+        List<Order> orders = orderRepository.findAllWithItem();
+        List<OrderResponse> collect = orders.stream()
+                .map(o -> new OrderResponse(o))
+                .collect(Collectors.toList());
+
+        return collect;
+    }
+
     @Data
     static class OrderResponse {
         private Long orderId;
