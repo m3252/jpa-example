@@ -29,6 +29,9 @@ GET http://localhost:8080/api/v3.1/orders
 ### 컬렉션 주문 조회 v4
 GET http://localhost:8080/api/v4/orders
 
+### 컬렉션 주문 조회 v5
+GET http://localhost:8080/api/v5/orders
+
 
 
 ### 조회

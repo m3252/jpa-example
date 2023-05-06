@@ -74,6 +74,11 @@ public class OrderApiController {
         return orderQueryRepository.findOrderQuery();
     }
 
+    @GetMapping("api/v5/orders")
+    public List<OrderQueryResponse> orderV5() {
+        return orderQueryRepository.findAllByResponse();
+    }
+
 
     @Data
     static class OrderResponse {
