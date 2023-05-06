@@ -75,4 +75,20 @@ public class OrderQueryRepository {
                 .collect(Collectors.groupingBy(OrderItemQueryResponse::getOrderId));
         return orderItemMap;
     }
+
+    public List<OrderFlatResponse> findAllByResponse_flat() {
+        List<OrderFlatResponse> result = em.createQuery(
+                        "select new " +
+                                "jpabook.jpashop.repository.order.query.OrderFlatResponse(" +
+                                "o.id, m.name, o.orderDate, o.status, d.address, i.name, oi.orderPrice, oi.count" +
+                                ")" +
+                                " from Order o" +
+                                " join o.member m" +
+                                " join o.delivery d" +
+                                " join o.orderItems oi" +
+                                " join oi.item i", OrderFlatResponse.class)
+                .getResultList();
+
+        return result;
+    }
 }
