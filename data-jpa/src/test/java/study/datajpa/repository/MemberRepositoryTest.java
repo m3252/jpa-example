@@ -5,9 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
+import study.datajpa.entity.Team;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,6 +21,9 @@ class MemberRepositoryTest {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    TeamRepository teamRepository;
 
     @Test
     void saveMember() {
@@ -108,6 +114,79 @@ class MemberRepositoryTest {
         assertThat(result.get(0).getUsername()).isEqualTo("AAA");
         assertThat(result.get(0)).isEqualTo(m1);
     }
+
+    @Test
+    void findUsernameList() {
+        Member m1 = new Member("AAA", 10);
+        Member m2 = new Member("AAA", 20);
+
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        List<String> usernameList = memberRepository.findUsernameList();
+        usernameList.forEach(System.out::println);
+    }
+
+    @Test
+    void findMemberDto() {
+        Team team = new Team("teamA");
+        teamRepository.save(team);
+
+        Member m1 = new Member("AAA", 10);
+        m1.changeTeam(team);
+        memberRepository.save(m1);
+
+
+        List<MemberDto> memberDto = memberRepository.findMemberDto();
+        for (MemberDto dto : memberDto) {
+            System.out.println("dto = " + dto);
+        }
+    }
+
+    @Test
+    void findByNames() {
+        Member m1 = new Member("AAA", 10);
+        Member m2 = new Member("BBB", 20);
+
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        List<Member> result = memberRepository.findByNames(List.of("AAA", "BBB"));
+        for (Member member : result) {
+            System.out.println("member = " + member);
+        }
+
+    }
+
+    @Test
+    void returnType() {
+        Member m1 = new Member("AAA", 10);
+        Member m2 = new Member("AAA", 20);
+
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        List<Member> list = memberRepository.findListByUsername("asd");
+        for (Member member : list) {
+            System.out.println("member = " + member);
+        }
+
+        Member member = memberRepository.findMemberByUsername("AeqwqAA");
+        System.out.println(member);
+
+        // NonUniqueResultException > IncorrectResultSizeDataAccessException
+        Optional<Member> om = memberRepository.findOptionalByUsername("AAA");
+        System.out.println("om = " + om);
+
+
+
+
+
+    }
+
+
+
+
 
 
 }

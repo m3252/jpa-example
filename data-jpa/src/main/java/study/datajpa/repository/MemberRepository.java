@@ -3,9 +3,12 @@ package study.datajpa.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
@@ -19,5 +22,18 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select m from Member m where m.username = :username and m.age = :age") // 런타임 시점에 쿼리 검증이 가능하다. (쿼리가 잘못되었을 경우 오류 발생)
     List<Member> findUser(@Param("username") String username, @Param("age") int age);
 
+    @Query("select m.username from Member m") // new operation을 통해서 DTO로 바로 조회 가능
+    List<String> findUsernameList();
 
+    @Query("select new study.datajpa.dto.MemberDto(m.id, m.username, t.name) from Member m join m.team t") // DTO로 바로 조회 가능
+    List<MemberDto> findMemberDto();
+
+    @Query("select m from Member m where m.username in :names") // in 절을 통해 여러 개의 파라미터를 받을 수 있음
+    List<Member> findByNames(@Param("names") Collection<String> names);
+
+    List<Member> findListByUsername(String username); // 컬렉션
+
+    Member findMemberByUsername(String username); // 단건
+
+    Optional<Member> findOptionalByUsername(String username); // 단건 Optional
 }
