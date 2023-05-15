@@ -7,6 +7,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.datajpa.entity.Member;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -28,6 +30,33 @@ class MemberJpaRepositoryTest {
         assertThat(findMember.getUsername()).isEqualTo(member.getUsername());
         assertThat(findMember).isEqualTo(member); // 1차 캐시
         assertThat(findMember).isSameAs(member);
+    }
+
+    @Test
+    void curd() {
+        Member member1 = new Member("membe1");
+        Member member2 = new Member("membe2");
+
+        memberJpaRepository.save(member1);
+        memberJpaRepository.save(member2);
+
+        // 단건 조회
+        Member find1 = memberJpaRepository.findById(member1.getId()).get();
+        Member find2 = memberJpaRepository.findById(member2.getId()).get();
+        assertThat(find1).isEqualTo(member1);
+        assertThat(find2).isEqualTo(member2);
+
+        // 리스트 조회
+        List<Member> all = memberJpaRepository.findAll();
+        assertThat(all.size()).isSameAs(2);
+
+        long count = memberJpaRepository.count();
+        assertThat(count).isSameAs(2L);
+
+        //삭제 검증
+        memberJpaRepository.delete(member1);
+        memberJpaRepository.delete(member2);
+        assertThat(memberJpaRepository.count()).isSameAs(0L);
 
     }
 
