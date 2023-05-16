@@ -30,6 +30,9 @@ class MemberRepositoryTest {
     @Autowired
     TeamRepository teamRepository;
 
+    @Autowired
+    MemberQueryRepository memberQueryRepository;
+
     @PersistenceContext
     EntityManager em;
 
@@ -282,6 +285,30 @@ class MemberRepositoryTest {
         em.clear();
 
         List<Member> findMember = memberRepository.findLockByUsername("member1");
+    }
+
+    @Test
+    void callCustom() {
+        List<Member> result = memberRepository.findMemberCustom();
+    }
+
+    @Test
+    void baseEntity() throws Exception {
+        Member member = new Member("member1", 10);
+        memberRepository.save(member);
+
+        Thread.sleep(100);
+        member.setAge(11);
+
+        em.flush();
+        em.clear();
+
+        Optional<Member> byId = memberRepository.findById(member.getId());
+        System.out.println("byId.get().getCreatedDate() = " + byId.get().getCreatedDate());
+        System.out.println("byId.get().getLastModifiedDate() = " + byId.get().getLastModifiedDate());
+        System.out.println("byId.get().getCreatedBy() = " + byId.get().getCreatedBy());
+        System.out.println("byId.get().getLastModifiedBy() = " + byId.get().getLastModifiedBy());
+
     }
 
 }

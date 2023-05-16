@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Getter @Setter
 @ToString(of = {"id", "name"})
-public class Team {
+public class Team extends JpaBaseEntity {
 
     @Id
     @GeneratedValue
