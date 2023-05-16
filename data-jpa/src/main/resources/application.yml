@@ -12,6 +12,13 @@ spring:
           format_sql: true
           #show-sql: true
 
+    data:
+      web:
+        pageable:
+          default-page-size: 10
+          max-page-size: 200
+          one-indexed-parameters: true
+
 logging.level:
     org.hibernate.SQL: INFO
     #org.hibernate.type.descriptor.sql.BasicBinder: trace
