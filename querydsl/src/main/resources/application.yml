@@ -10,6 +10,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        use_sql_comments: false #p6spy conflict
 
 logging.level:
   org.hibernate.SQL: INFO
