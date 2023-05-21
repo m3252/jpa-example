@@ -19,6 +19,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import study.querydsl.dto.MemberDto;
 import study.querydsl.dto.QMemberDto;
 import study.querydsl.dto.UserDto;
@@ -680,5 +681,55 @@ public class QuerydslBasicTest {
 
     private Predicate allEq(String usernameParam, Integer ageParam) {
         return usernameEq(usernameParam).and(ageEq(ageParam));
+    }
+
+    @Test
+    @Commit
+    void bulkUpdate() {
+
+        // member1 = 10 -> DB member1
+        // member2 = 20 -> DB member2
+
+        long count = queryFactory
+                .update(member)
+                .set(member.username, "비회원")
+                .where(member.age.lt(28))
+                .execute();
+
+        em.flush();
+        em.clear();
+
+        // member1 = 10 -> DB 비회원
+        // member2 = 20 -> DB 비회원
+
+        // 벌크 연산은 영속성 컨텍스트를 무시하고 DB에 바로 쿼리를 날린다. (repeatable read)
+        List<Member> list = queryFactory.selectFrom(member).fetch();
+        for (Member member1 : list) {
+            System.out.println("member1 = " + member1);
+        }
+    }
+
+    @Test
+    void bulkAdd() {
+        queryFactory
+                .update(member)
+                .set(member.age, member.age.add(1))
+                .execute();
+    }
+
+    @Test
+    void bulkMultiply() {
+        queryFactory
+                .update(member)
+                .set(member.age, member.age.multiply(2))
+                .execute();
+    }
+
+    @Test
+    void bulkDelete() {
+        queryFactory
+                .delete(member)
+                .where(member.age.gt(18))
+                .execute();
     }
 }
